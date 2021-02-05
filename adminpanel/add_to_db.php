@@ -1,9 +1,71 @@
 <?php
 session_start();
+
 include_once "template-elements.php";
-include_once "./../connect.php";
+require_once "./../connect.php";
+function categories_list()
+{
+    require "./../connect.php";
+    try
+    {
+        $connect = @new mysqli($db_host, $db_user, $db_password, $db_name);
+        if($connect->connect_errno != 0)
+        {
+            throw new exception(mysqli_connect_errno());
+        }
+        else
+        {
+            $sql = sprintf("SELECT * FROM categories");
+            if($result = $connect->query($sql))
+            {
+                foreach($result as $row)
+                {
+                    echo "<div class=\"list-object\">
+                    <div class=\"list-object-photo\"></div>
+                    <div class=\"list-object-title\">".$row['category']."</div>
+                </div>";
+                }
+            }
+            $connect->close();
+        }
+    }
+    catch (exception $e)
+    {
+        echo $e;
+    }
+}
+function categories_list_add()
+{
+    require "./../connect.php";
+    try
+    {
+        $connect = @new mysqli($db_host, $db_user, $db_password, $db_name);
+        if($connect->connect_errno != 0)
+        {
+            throw new exception(mysqli_connect_errno());
+        }
+        else
+        {
+            $sql = sprintf("SELECT * FROM categories");
+            if($result = $connect->query($sql))
+            {
+                foreach($result as $row)
+                {
+                    echo "<option>".$row['category']."</option>";
+                }
+            }
+            $connect->close();
+        }
+    }
+    catch (exception $e)
+    {
+        echo $e;
+    }
+}
 ?>
 <?php
+
+
 if(isset($_POST["submit"]))
 {
     try
@@ -17,7 +79,6 @@ if(isset($_POST["submit"]))
                 $ingredients = $_POST['ingredients'];
                 $price = $_POST['price'];
                 $category = $_POST['category'];
-                echo $category;
                 $subcategory;
                 $subsubcategory;
                 $connect = @new mysqli($db_host, $db_user, $db_password, $db_name);
@@ -28,11 +89,16 @@ if(isset($_POST["submit"]))
                 }
                 else
                 {
-                    $sql = sprintf("INSERT INTO products(id, photo, title, ingredients, price) values(NULL, '$file_name', '$title', '$ingredients', '$price', '$category')");
+                    $sql = sprintf("SELECT id FROM categories WHERE category='$category'");
+                    if($result = $connect->query($sql))
+                    {
+                        $row = $result->fetch_assoc();
+                        $category = $row['id'];
+                    }
+                    $sql = sprintf("INSERT INTO products(id, photo, title, ingredients, price, category) values(NULL, '$file_name', '$title', '$ingredients', '$price', '$category')");
                     if($connect->query($sql))
                     {
                         move_uploaded_file($_FILES["photo"]["tmp_name"], "./../pizza-photos/".$file_name);
-                        echo 1;
                     }
                 }
                 
@@ -49,7 +115,7 @@ if(isset($_POST["submit"]))
     }
     catch (exception $e)
     {
-        
+        echo $e;
     }
 }
 ?>
@@ -152,6 +218,7 @@ if(isset($_POST["submit"]))
 			<div id="content">
                 <div id="left">
                     <div class="list list-cat">
+                    
                         <div class="list-object">
                             <div class="list-object-photo">
                                 <img src="pizzapreview.png" alt="add-cat"/>
@@ -162,18 +229,7 @@ if(isset($_POST["submit"]))
                             <div class="list-object-photo"></div>
                             <div class="list-object-title">Lorem ipsum dolor sit amet.</div>
                         </div>
-                        <div class="list-object">
-                            <div class="list-object-photo"></div>
-                            <div class="list-object-title">Lorem ipsum dolor sit amet.</div>
-                        </div>
-                        <div class="list-object">
-                            <div class="list-object-photo"></div>
-                            <div class="list-object-title">Lorem ipsum dolor sit amet.</div>
-                        </div>
-                        <div class="list-object">
-                            <div class="list-object-photo"></div>
-                            <div class="list-object-title">Lorem ipsum dolor sit amet.</div>
-                        </div>
+                        <?php categories_list(); ?>
                     </div>
                     <div class="list list-product"></div>
                 </div>
@@ -186,10 +242,7 @@ if(isset($_POST["submit"]))
                         <input oninput="preview_price()" id="price" name="price" type="text" placeholder="Cena"/>
                         <select id="category" name="category" onchange="submit_check()">
                             <option></option>
-                            <option>Pizza</option>
-                            <option>Napoje</option>
-                            <option>Sałatki</option>
-                            <option>Dania</option>
+                            <?php categories_list_add(); ?>
                         </select>
                         <div id="item-preview">
                             <div id="item-container">
