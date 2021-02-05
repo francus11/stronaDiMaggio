@@ -1,0 +1,17 @@
+#gallery{
+    display: flex;
+}
+#left, #center, #right{
+    width: 300px;
+    height: 300px;
+    
+}
+#left{
+    background-color: red;
+}
+#center{
+    background-color: green;
+}
+#right{
+    background-color: blue;
+}

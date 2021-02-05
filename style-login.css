@@ -1,0 +1,122 @@
+#menu{
+    justify-content: center;
+}
+#login-container{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255, 140, 0, 0.79);
+    width: 610px;
+    padding: 0 20px 20px 20px;
+}
+#choose-method{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /*border-style: solid;
+    border-width: 0px 0px 1px;
+    -moz-border-image: url(border4.png) 1 round;
+    -webkit-border-image: url(border4.png) 1 round;
+    -o-border-image: url(border4.png) 1 round;
+    border-image: url(border4.png) 1 round;*/
+    padding-bottom: 20px;
+}
+.choosed-method{
+    padding-top: 20px;
+    padding-bottom: 7px;
+    width: 200px;
+    font-size: 23px;
+    text-align: center;
+    
+}
+.choosed-method:hover{
+    cursor: pointer;
+}
+.choosed-method:first-child{
+    padding-right: 10px;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: white;
+}
+.choosed-method:last-child{
+    padding-left: 10px;
+}
+form{
+    width: 300px;
+}
+#register-data{
+    display: none;
+}
+form input[type=text], #login-container input[type=password], #login-container input[type=email]{
+    font-family: 'Open sans condensed', sans-serif;
+    box-sizing: border-box;
+    width: 100%;
+	border-style: solid;
+	border-width: 0px;
+	border-color: rgba(0, 0, 0, 0.67);
+	font-size: 20px;
+    background-color: rgb(255, 255, 255);
+	border-radius: 0px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: padding 0.5s;
+}
+#login-container input[type=text]:focus, #login-container input[type=password]:focus, #login-container input[type=email]:focus{
+    outline: none;
+    padding: 15px;
+    transition: padding 0.5s;
+}
+input[type=submit]{
+    font-family: 'Open sans condensed', sans-serif;
+    padding: 2px 20px;
+    margin-top: 15px;
+    border: none;
+    background-color: white;
+    font-size: 20px;
+}
+input[type=submit]:active{
+    outline: none;
+}
+#menu{
+    justify-content: space-between;
+}
+#account{
+    justify-content: flex-end;
+    width: 220px;
+}
+@media only screen and (min-width: 1240px){
+	
+}
+@media only screen and (max-width: 1239px){
+    
+}
+@media only screen and (min-width: 650px){
+    
+}
+@media only screen and (max-width: 649px){
+    
+    #links{
+        order: 3;
+    }
+    #login-container{
+        width: 100%;
+        margin: 0 20px 20px 20px;
+    }
+    form{
+        width: 100%;
+    }
+    .choosed-method{
+        box-sizing: border-box;
+        width: 50%;
+    }
+    #menu ul{
+        width: calc(100% - 66px);
+    }
+    #menu{
+        justify-content: space-between;
+    }
+    #account{
+        width: 66px;
+    }
+}

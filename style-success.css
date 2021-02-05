@@ -1,0 +1,42 @@
+#success-container{
+    background-color: rgba(255, 140, 0, 0.79);
+    box-sizing: border-box;
+    padding: 20px;
+    width: 700px;
+}
+#success-title{
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+#success-text{
+    text-align: center;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+#success-to-main-site{
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+#success-to-main-site a{
+    color: black;
+}
+success-to-main-site a:link{
+    color: black;
+}
+success-to-main-site a:active{
+    color: black;
+}
+success-to-main-site a:visited{
+    color: black;
+}
+@media only screen and (max-width: 749px){
+    #success-container{
+        width: 100%;
+        margin: 0 20px 20px 20px;
+    }
+}
+@media only screen and (max-width: 649px){
+    
+}

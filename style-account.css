@@ -1,0 +1,222 @@
+#account-container{
+    box-sizing: border-box;
+    background-color: rgba(255, 140, 0, 0.79);
+    width: 900px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#profile{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+#profile-right{
+    margin-left: 20px;
+}
+#user-name{
+    
+    font-size: 25px;
+}
+#profile-photo{
+    height: 100px;
+}
+#profile-photo img{
+    height: 100%;
+    object-fit: contain;
+}
+#logout{
+    font-size: 20px;
+    color: black;
+    transition: color, 0.3s;
+}
+#logout:link{
+    color: black;
+}   
+#logout:active{
+    color: black;
+}
+#logout:visited{
+    color: black;
+}
+#logout:hover{
+    color: white;
+    transition: color, 0.3s;
+}
+#account-menu{
+    margin-top: 20px;
+    display: flex;
+    width: 570px;
+}
+.account-menu-option{
+    padding: 0 0 5px 0;
+    font-size: 23px;
+    width: 50%;
+    transition: color, 0.3s;
+    text-align: center;
+    margin-bottom: 10px;
+    
+}
+.account-menu-option:first-child{
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-color: white;
+}
+.account-menu-option:hover{
+    transition: color, 0.3s;
+    color: white;
+    cursor: pointer;
+}
+#account-content{
+    display: flex;
+    justify-content: center;
+}
+#account-address{
+    width: 278px;
+}
+.account-title{
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+form input[type=text], form input[type=tel], form input[type=password], form input[type=email]{
+    font-family: 'Open sans condensed', sans-serif;
+    box-sizing: border-box;
+    width: 100%;
+	border-style: solid;
+	border-width: 0px;
+	border-color: rgba(0, 0, 0, 0.67);
+	font-size: 20px;
+    background-color: rgb(255, 255, 255);
+	border-radius: 0px;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: padding 0.5s
+}
+form input[type=text]:focus, form input[type=tel]:focus, form input[type=password]:focus, form input[type=email]:focus{
+    outline: none;
+    padding: 15px;
+    transition: padding 0.5s
+}
+form input[type=submit]{
+    font-family: 'Open sans condensed', sans-serif;
+    width: 130px;
+    border: none;
+    background-color: white;
+    font-size: 25px;
+}
+#account-orders{
+    display: none;
+    width: 100%;
+}
+#order-legend{
+    display: flex;
+    padding-bottom: 10px;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: white;
+}
+#order-date, #order-status{
+    text-align: center;
+}
+#order-number, #order-date, #order-status, #order-price{
+    width: 25%;
+}
+#order-price{
+    text-align: right;
+}
+.order-object{
+    display: flex;
+    padding: 10px 0;
+    text-decoration: none;
+    color: black;
+}
+.order-object:active{
+    text-decoration: none;
+    color: black;
+}
+.order-object:link{
+    text-decoration: none;
+    color: black;
+}
+.order-object:visited{
+    text-decoration: none;
+    color: black;
+    transition: color, 0.3s;
+}
+.order-object:hover{
+    color: white;
+    transition: color, 0.3s;
+}
+.order-date, .order-status{
+    text-align: center;
+}
+.order-number, .order-date, .order-status, .order-price{
+    width: 25%;
+}
+.order-price{
+    text-align: right;
+}
+#post{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.post-code:first-child{
+    width: 27.7%;
+}
+.post-code:last-child{
+    width: 71%;
+}
+
+@media only screen and (min-width: 1240px){
+	
+}
+@media only screen and (max-width: 1239px){
+    
+}
+@media only screen and (min-width: 650px){
+    
+}
+@media only screen and (max-width: 940px){
+    #content{
+        margin: 0;
+    }
+    #account-container{
+        width: 100%;
+        margin: 0 20px;
+    }
+}
+@media only screen and (max-width: 649px){
+    #profile{
+        justify-content: flex-start;
+    }
+    #profile-photo{
+        height: 75px;
+    }
+    /*#user-name{
+        font-size: 20px;
+    }
+    #logout{
+        font-size: 17px;
+    }*/
+    #account-menu{
+        width: 100%
+    }
+    #account-content{
+        width: 100%;
+    }
+    #account-address{
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 350px){
+    #account-menu{
+        flex-direction: column;
+    }
+    .account-menu-option{
+        width: 100%;
+    }
+    
+}
