@@ -83,7 +83,7 @@ function category_to_id($category)
                 return $return;
             }
             $connect->close();
-            
+
         }
     }
     catch (exception $e)
@@ -116,6 +116,7 @@ if(isset($_POST["submit"]))
                 {
                     throw new exception($connect->error);
                 }
+
                 else
                 {
                     /*$sql = sprintf("SELECT id FROM categories WHERE category='$category'");
@@ -131,7 +132,7 @@ if(isset($_POST["submit"]))
                         move_uploaded_file($_FILES["photo"]["tmp_name"], "./../pizza-photos/".$file_name);
                     }
                 }
-                
+
             }
             else
             {
@@ -150,7 +151,7 @@ if(isset($_POST["submit"]))
 }
 ?>
 <html>
-	<head>
+    <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="Stylesheet" href="style-adminpanel.css" type="text/css" />
@@ -159,13 +160,13 @@ if(isset($_POST["submit"]))
         <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700&display=swap&subset=latin-ext" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <title>DiMaggio</title>
-		<script>
-        function expandMenu() 
+        <script>
+        function expandMenu()
             {
           var x = document.getElementById("side-bar");
           if (x.style.display === "block") {
             x.style.display = "none";
-          } 
+          }
             else
             {
             x.style.display = "block";
@@ -200,7 +201,7 @@ if(isset($_POST["submit"]))
                 $("#price").val(value);
             }
             $("#item-price").html(value+" zł");
-            
+
             if(value == "")
             {
                 $("#item-price").html("0 zł");
@@ -230,25 +231,25 @@ if(isset($_POST["submit"]))
             {
                 $("#submit").prop("disabled", true);
             }
-            
+
         }
         </script>
-	</head>
-	<body>
-		<div id="container">
-			<div id="header">
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
                 <div id="menu"><!-- FUTURE na mobilnych ma wysuwać się z boku i przesuwać całą stronę w prawo-->
                     <div id="side-bar-onclick" onclick="expandMenu()"></div>
                 </div>
-			</div>
+            </div>
             <div id="side-bar">
                 <a href=""><div class="side-bar-option"></div></a>
                 <a href=""><div class="side-bar-option"></div></a>
             </div>
-			<div id="content">
+            <div id="content">
                 <div id="left">
                     <div class="list list-cat">
-                    
+
                         <div class="list-object">
                             <div class="list-object-photo">
                                 <img src="pizzapreview.png" alt="add-cat"/>
@@ -299,10 +300,10 @@ if(isset($_POST["submit"]))
                         <div id="check"></div>
                     </form>
                 </div>
-                
+
             </div>
-		</div>
-	</body>
+        </div>
+    </body>
     <script>
     function readURL(input) {
       if (input.files && input.files[0]) {
