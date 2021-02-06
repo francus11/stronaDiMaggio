@@ -62,6 +62,35 @@ function categories_list_add()
         echo $e;
     }
 }
+function category_to_id($category)
+{
+    require "./../connect.php";
+    try
+    {
+        $connect = @new mysqli($db_host, $db_user, $db_password, $db_name);
+        if($connect->connect_errno != 0)
+        {
+            throw new exception(mysqli_connect_errno());
+        }
+        else
+        {
+            $sql = sprintf("SELECT id FROM categories WHERE category='$category'");
+            $return;
+            if($result = $connect->query($sql))
+            {
+                $row = $result->fetch_assoc();
+                $return = $row['id'];
+                return $return;
+            }
+            $connect->close();
+            
+        }
+    }
+    catch (exception $e)
+    {
+        echo $e;
+    }
+}
 ?>
 <?php
 
@@ -89,12 +118,13 @@ if(isset($_POST["submit"]))
                 }
                 else
                 {
-                    $sql = sprintf("SELECT id FROM categories WHERE category='$category'");
+                    /*$sql = sprintf("SELECT id FROM categories WHERE category='$category'");
                     if($result = $connect->query($sql))
                     {
                         $row = $result->fetch_assoc();
                         $category = $row['id'];
-                    }
+                    }*/
+                    $category = category_to_id($category);
                     $sql = sprintf("INSERT INTO products(id, photo, title, ingredients, price, category) values(NULL, '$file_name', '$title', '$ingredients', '$price', '$category')");
                     if($connect->query($sql))
                     {
