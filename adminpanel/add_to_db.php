@@ -240,68 +240,27 @@ if(isset($_POST["submit"]))
             }
 
         }
-        //        TODO wyszukiwanie listy produktów na podstawie wybranej kategorii
         function product_list(id)
         {
-            var count = 0;
-//            działa, ale jest problem zszybkim klikaniem, zmienia kolejnosc
-            /*$.ajax(
+            $.ajax(
             {
-                url: "category_list.php", //the page containing php script
-                type: "post", //request type,
+                type: 'post',
+                url: 'category_list.php',
+                dataType: 'json',
                 data:
                 {
-                    request_count: 1,
                     category_id: id
                 },
-                success: function(result)
+                success: function(response)
                 {
-
-                    count = result;
+                    //TODO dodać możliwosc zmieniania danego rekordu
                     $('.list-product').html(" ");
-                    for (i = 0; i < count; i++)
+                    for (i = 0; i < response.length; i++)
                     {
-
-                        $.ajax(
-                        {
-
-                            url: "category_list.php", //the page containing php script
-                            type: "post", //request type,
-                            dataType: 'json',
-                            data:
-                            {
-                                request_row: i,
-                                category_id: id
-                            },
-                            success: function(result1)
-                            {
-                                $('.list-product').html($('.list-product').html() + "<div class=\"list-object\"><div class=\"list-object-photo\"><img src=\"../pizza-photos/" + result1.photo + "\" alt=\"add-cat\" /></div><div class=\"list-object-title\">" + result1.title +"</div></div>");
-                                console.log(result1);
-                                //                    console.log(result.abc);
-                            }
-                        });
-                    }
-
-                    //                    console.log(result.abc);
-                }
-            });*/
-            $.ajax({
-                type:'post',
-                url:'category_list.php',
-                dataType: 'json',
-                data:{
-                    category_id: id
-                },
-                success:function(response) {
-                    $('.list-product').html(" ");
-                    for(i = 0; i < response.length; i++)
-                    {
-                        $('.list-product').html($('.list-product').html() + "<div class=\"list-object\"><div class=\"list-object-photo\"><img src=\"../pizza-photos/" + response[i].photo + "\" alt=\"add-cat\" /></div><div class=\"list-object-title\">" + response[i].title +"</div></div>");
+                        $('.list-product').html($('.list-product').html() + "<div class=\"list-object\"><div class=\"list-object-photo\"><img src=\"../pizza-photos/" + response[i].photo + "\" alt=\"add-cat\" /></div><div class=\"list-object-title\">" + response[i].title + "</div></div>");
                     }
                 }
-                });
-
-
+            });
         }
 
     </script>

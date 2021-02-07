@@ -2,7 +2,6 @@
 
 if (isset($_POST['category_id']))
 {
-//    $_POST['category_id']
     require "./../connect.php";
     try
     {
@@ -23,13 +22,10 @@ if (isset($_POST['category_id']))
                 $i = 0;
                 while($row = $result->fetch_assoc())
                 {
-//                    echo json_encode($row);
                     $a[$i] = $row;
                     $i++;
                 }
                 echo json_encode($a);
-
-
             }
             $connect->close();
         }
