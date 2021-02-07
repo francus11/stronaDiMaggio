@@ -239,16 +239,13 @@ if(isset($_POST["submit"]))
             }
 
         }
-
+//        TODO wyszukiwanie listy produktów na podstawie wybranej kategorii
         function product_list(id)
         {
 
         }
 
-        function a()
-        {
 
-        }
 
     </script>
 </head>
