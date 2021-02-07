@@ -3,6 +3,7 @@ session_start();
 
 include_once "template-elements.php";
 require_once "./../connect.php";
+include_once "category_list.php";
 function categories_list()
 {
     require "./../connect.php";
@@ -157,7 +158,7 @@ if(isset($_POST["submit"]))
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="Stylesheet" href="style-adminpanel.css" type="text/css" />
     <link rel="Stylesheet" href="style-addtodb.css" type="text/css" />
-    <link rel="Stylesheet" href="fontello/css/fontello.css" type="text/css" />
+    <!--    <link rel="Stylesheet" href="fontello/css/fontello.css" type="text/css" />-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700&display=swap&subset=latin-ext" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>DiMaggio</title>
@@ -239,13 +240,69 @@ if(isset($_POST["submit"]))
             }
 
         }
-//        TODO wyszukiwanie listy produktów na podstawie wybranej kategorii
+        //        TODO wyszukiwanie listy produktów na podstawie wybranej kategorii
         function product_list(id)
         {
+            var count = 0;
+//            działa, ale jest problem zszybkim klikaniem, zmienia kolejnosc
+            /*$.ajax(
+            {
+                url: "category_list.php", //the page containing php script
+                type: "post", //request type,
+                data:
+                {
+                    request_count: 1,
+                    category_id: id
+                },
+                success: function(result)
+                {
+
+                    count = result;
+                    $('.list-product').html(" ");
+                    for (i = 0; i < count; i++)
+                    {
+
+                        $.ajax(
+                        {
+
+                            url: "category_list.php", //the page containing php script
+                            type: "post", //request type,
+                            dataType: 'json',
+                            data:
+                            {
+                                request_row: i,
+                                category_id: id
+                            },
+                            success: function(result1)
+                            {
+                                $('.list-product').html($('.list-product').html() + "<div class=\"list-object\"><div class=\"list-object-photo\"><img src=\"../pizza-photos/" + result1.photo + "\" alt=\"add-cat\" /></div><div class=\"list-object-title\">" + result1.title +"</div></div>");
+                                console.log(result1);
+                                //                    console.log(result.abc);
+                            }
+                        });
+                    }
+
+                    //                    console.log(result.abc);
+                }
+            });*/
+            $.ajax({
+                type:'post',
+                url:'category_list.php',
+                dataType: 'json',
+                data:{
+                    category_id: id
+                },
+                success:function(response) {
+                    $('.list-product').html(" ");
+                    for(i = 0; i < response.length; i++)
+                    {
+                        $('.list-product').html($('.list-product').html() + "<div class=\"list-object\"><div class=\"list-object-photo\"><img src=\"../pizza-photos/" + response[i].photo + "\" alt=\"add-cat\" /></div><div class=\"list-object-title\">" + response[i].title +"</div></div>");
+                    }
+                }
+                });
+
 
         }
-
-
 
     </script>
 </head>
