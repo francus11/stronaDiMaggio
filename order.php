@@ -50,7 +50,7 @@ include_once "connect.php";
                         if(!isset($_SESSION['basket_id']))
                         {
                             $error = true;
-                            
+
                         }
                         if($error == false)
                         {
@@ -64,7 +64,7 @@ include_once "connect.php";
                             $promotion_price = $_SESSION['promotion_price'];
                             $order_status = "Oczekujące";
                             $user_id = $_SESSION['logged_id'];
-                            
+
                             if($connect->query("INSERT INTO orders (id, user_id, name, date, address, zip_code, city, phone, sum_price, items_price, promotion_price, status) VALUES (NULL, '$user_id', '$user_name', now(), '$user_address', '$user_zip', '$user_city', '$user_phone', '$sum_price', '$items_price', '$promotion_price', '$order_status')"))
                             {
                                 $last_id = $connect->insert_id;
@@ -97,101 +97,120 @@ include_once "connect.php";
 ?>
 <!DOCTYPE html>
 <html>
-	<head>
-		<?php
+
+<head>
+    <?php
         head();
         ?>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <link rel="Stylesheet" href="style-order.css" type="text/css" />
-        <title>Złóż zamówienie - DiMaggio</title>
-        <script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="Stylesheet" href="style-order.css" type="text/css" />
+    <title>Złóż zamówienie - DiMaggio</title>
+    <script>
         window.onload = function()
         {
             calc();
             calc1();
             calc2();
         }
+
         function remove_item_basket(item)
+        {
+            $.ajax(
             {
-                $.ajax({
-                type:'post',
-                url:'remove_item_basket.php',
-                data:{
+                type: 'post',
+                url: 'remove_item_basket.php',
+                data:
+                {
                     remove_item: item
                 },
-                success:function(response) {
+                success: function(response)
+                {
 
                     window.location = "order.php";
                 }
-                });
-            }
-            function calc()
+            });
+        }
+
+        function calc()
+        {
+            $.ajax(
             {
-                $.ajax({
-                    type:'post',
-                    url:'calc_submit.php',
-                    data:{
-                        calc: "calc"
-                    },
-                    success:function(response2) {
-                      document.getElementById("sum-value").innerHTML = response2;
+                type: 'post',
+                url: 'calc_submit.php',
+                data:
+                {
+                    calc: "calc"
+                },
+                success: function(response2)
+                {
+                    document.getElementById("sum-value").innerHTML = response2;
 
-                    }
-                    });
+                }
+            });
 
-            }
-            function calc1()
+        }
+
+        function calc1()
+        {
+            $.ajax(
             {
-                $.ajax({
-                    type:'post',
-                    url:'calc_submit1.php',
-                    data:{
-                        calc: "calc"
-                    },
-                    success:function(response3) {
-                      document.getElementById("items-value").innerHTML = response3;
+                type: 'post',
+                url: 'calc_submit1.php',
+                data:
+                {
+                    calc: "calc"
+                },
+                success: function(response3)
+                {
+                    document.getElementById("items-value").innerHTML = response3;
 
-                    }
-                    });
+                }
+            });
 
-            }
-            function calc2()
+        }
+
+        function calc2()
+        {
+            $.ajax(
             {
-                $.ajax({
-                    type:'post',
-                    url:'calc_submit2.php',
-                    data:{
-                        calc: "calc"
-                    },
-                    success:function(response4) {
-                      document.getElementById("promotion-value").innerHTML = response4;
+                type: 'post',
+                url: 'calc_submit2.php',
+                data:
+                {
+                    calc: "calc"
+                },
+                success: function(response4)
+                {
+                    document.getElementById("promotion-value").innerHTML = response4;
 
-                    }
-                    });
+                }
+            });
 
-            }
-        </script>
-	</head>
-	<body>
-		<div id="container">
-			<div id="header">
-				<div id="bar"></div>
-                <?php
+        }
+
+    </script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="bar"></div>
+            <?php
                 menu();
                 ?>
-			</div>
-			<div id="content">
-                <div id="order-container">
-                    <?php
+        </div>
+        <div id="content">
+            <div id="order-container">
+                <?php
                     if(isset($_SESSION['error']))
                     {
                     echo $_SESSION['error'];
                     unset ($_SESSION['error']);
                     }
                     ?>
-                    <div id="order-items">
-                        <div class="order-title">Koszyk</div>
-                        <?php
+                <div id="order-items">
+                    <div class="order-title">Koszyk</div>
+                    <?php
                         if(isset($_SESSION['basket_id']))
                         {
                             for($i=0; $i<count($_SESSION['basket_id']); $i++)
@@ -231,7 +250,7 @@ include_once "connect.php";
                                 }
                                 catch(exception $e)
                                 {
-                                    
+
                                 }
                             }
                         }
@@ -240,51 +259,51 @@ include_once "connect.php";
                             echo '<div id="empty-basket">Twój koszyk jest pusty. Dodaj produkty do zamówienia i wróć tu później.</div>';
                         }
                         ?>
-                        
-                    </div>
-                    <form id="delivery" method="post">
-                        <div class="order-title">Szczegóły zamówienia</div>
-                        <div class="input-name">Imię i nazwisko</div>
-                        <input type="text" name="name" <?php
+
+                </div>
+                <form id="delivery" method="post">
+                    <div class="order-title">Szczegóły zamówienia</div>
+                    <div class="input-name">Imię i nazwisko</div>
+                    <input type="text" name="name" <?php
                                if(isset($_SESSION['name']))
                                {
                                    echo 'value="'.$_SESSION['name'].'"';
                                }
-                               ?>/>
-                        <?php
+                               ?> />
+                    <?php
                             if(isset($_SESSION['err_name']))
                             {
                                 echo '<div class="error-input">'.$_SESSION['err_name'].'</div>';
                                 unset($_SESSION['err_name']);
                             }
                         ?>
-                        <div class="input-name">Adres</div>
-                        <input type="text" name="address" <?php
+                    <div class="input-name">Adres</div>
+                    <input type="text" name="address" <?php
                                if(isset($_SESSION['address']))
                                {
                                    echo 'value="'.$_SESSION['address'].'"';
                                }
-                               ?>/>
-                        <?php
+                               ?> />
+                    <?php
                             if(isset($_SESSION['err_address']))
                             {
                                 echo '<div class="error-input">'.$_SESSION['err_address'].'</div>';
                                 unset($_SESSION['err_address']);
                             }
                         ?>
-                        <div class="input-name">Kod pocztowy</div>
-                        <div id="post"><input type="text" name="zip-code" maxlength="6" <?php
+                    <div class="input-name">Kod pocztowy</div>
+                    <div id="post"><input type="text" name="zip-code" maxlength="6" <?php
                                if(isset($_SESSION['zip_code']))
                                {
                                    echo 'value="'.$_SESSION['zip_code'].'"';
                                }
-                               ?>/><input type="text" name="city" <?php
+                               ?> /><input type="text" name="city" <?php
                                if(isset($_SESSION['city']))
                                {
                                    echo 'value="'.$_SESSION['city'].'"';
                                }
-                               ?>/></div>
-                        <?php 
+                               ?> /></div>
+                    <?php
                         if(isset($_SESSION['err_zip_code']) || isset($_SESSION['err_city']))
                         {
                             if(isset($_SESSION['err_city']))
@@ -299,46 +318,47 @@ include_once "connect.php";
                             unset($_SESSION['err_city']);
                             unset($_SESSION['err_zip_code']);
                         }
-                        ?> 
-                        <div class="input-name">Numer telefonu</div>
-                        <input type="text" name="phone" <?php
+                        ?>
+                    <div class="input-name">Numer telefonu</div>
+                    <input type="text" name="phone" <?php
                                if(isset($_SESSION['phone']))
                                {
                                    echo 'value="'.$_SESSION['phone'].'"';
                                }
-                               ?>/>
-                        <?php
+                               ?> />
+                    <?php
                             if(isset($_SESSION['err_phone']))
                             {
                                 echo '<div class="error-input">'.$_SESSION['err_phone'].'</div>';
                                 unset($_SESSION['err_phone']);
                             }
                         ?>
-                        <div class="subcost">
+                    <div class="subcost">
                         <div>Koszt produktów:</div>
-                            <div id="items-value"></div>
-                        </div>
-                        <div class="subcost">
+                        <div id="items-value"></div>
+                    </div>
+                    <div class="subcost">
                         <div>Koszt produktów ze zniżkami:</div>
-                            <div id="promotion-value"></div>
-                        </div>
-                        <div class="subcost">
+                        <div id="promotion-value"></div>
+                    </div>
+                    <div class="subcost">
                         <div>Koszt dostawy:</div>
-                            <div id="delivery-value">10.00 zł</div>
-                        </div>
-                        <div id="sum-cost">
+                        <div id="delivery-value">10.00 zł</div>
+                    </div>
+                    <div id="sum-cost">
                         <div>Łącznie:</div>
                         <div id="sum-value"></div>
-                        </div>
-                        <input value="Zamów" type="submit" name="order_submit"/>
-                    </form>
-                    
-				</div>
-                
+                    </div>
+                    <input value="Zamów" type="submit" name="order_submit" />
+                </form>
+
             </div>
-			<?php
+
+        </div>
+        <?php
             footer();
             ?>
-		</div>
-	</body>
+    </div>
+</body>
+
 </html>

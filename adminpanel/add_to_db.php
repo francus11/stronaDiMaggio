@@ -96,7 +96,7 @@ function category_to_id($category)
 <?php
 
 //wysyłanie itemu do bazy
-if(isset($_POST["submit"]))
+if(isset($_POST["submit_add"]))
 {
     try
     {
@@ -162,6 +162,78 @@ if(isset($_POST["submit"]))
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700&display=swap&subset=latin-ext" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>DiMaggio</title>
+    <script id="add_item" type="text/html">
+        <div id="site-title">Dodaj do bazy danych</div>
+        <form id="add-to-db" method="post" enctype="multipart/form-data">
+            <input type="file" accept="image/x-png" name="photo" id="photo" />
+            <input oninput="preview_title()" id="title" name="title" type="text" placeholder="Tytuł" />
+            <input oninput="preview_ingredients()" id="ingredients" name="ingredients" type="text" placeholder="Składniki" />
+            <input oninput="preview_price()" id="price" name="price" type="text" placeholder="Cena" />
+            <select id="category" name="category" onchange="submit_check()">
+                <option></option>
+                <?php categories_list_add(); ?>
+            </select>
+            <div id="item-preview">
+                <div id="item-container">
+                    <div id="item-border-line">
+                        <div id="item-photo">
+                            <img id="photo-preview1" src="pizzapreview.png" />
+                        </div>
+                        <div id="item-content">
+                            <div id="item-title">Tytuł</div>
+                            <div id="item-ingredients">Składniki, składniki, składniki, składniki, składniki</div>
+                            <div id="item-down">
+                                <div id="item-price">0 zł</div>
+                                <div id="item-order-button">
+                                    <div id="item-order-button-border">
+                                        <div id="item-order-button-name">Zamów</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input oninput="preview_price()" type="submit" id="submit" name="submit_add" value="Dodaj do bazy" disabled />
+            <div id="check"></div>
+        </form>
+    </script>
+    <script id="modify_item" type="text/html">
+        <div id="site-title">Edytuj przedmiot</div>
+        <form id="add-to-db" method="post" enctype="multipart/form-data">
+            <input type="file" accept="image/x-png" name="photo" id="photo" />
+            <input oninput="preview_title()" id="title" name="title" type="text" placeholder="Tytuł" />
+            <input oninput="preview_ingredients()" id="ingredients" name="ingredients" type="text" placeholder="Składniki" />
+            <input oninput="preview_price()" id="price" name="price" type="text" placeholder="Cena" />
+            <select id="category" name="category" onchange="submit_check()">
+                <option></option>
+                <?php categories_list_add(); ?>
+            </select>
+            <div id="item-preview">
+                <div id="item-container">
+                    <div id="item-border-line">
+                        <div id="item-photo">
+                            <img id="photo-preview1" src="pizzapreview.png" />
+                        </div>
+                        <div id="item-content">
+                            <div id="item-title">Tytuł</div>
+                            <div id="item-ingredients">Składniki, składniki, składniki, składniki, składniki</div>
+                            <div id="item-down">
+                                <div id="item-price">0 zł</div>
+                                <div id="item-order-button">
+                                    <div id="item-order-button-border">
+                                        <div id="item-order-button-name">Zamów</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input oninput="preview_price()" type="submit" id="submit" name="submit_modify" value="Dodaj do bazy" disabled />
+            <div id="check"></div>
+        </form>
+    </script>
     <script>
         function expandMenu()
         {
@@ -253,17 +325,30 @@ if(isset($_POST["submit"]))
                 },
                 success: function(response)
                 {
-                    //TODO dodać możliwosc zmieniania danego rekordu
+
                     $('.list-product').html(" ");
+                    $('.list-product').html("<div class=\"list-object\" onclick=\"add_product()\"><div class=\"list-object-photo\"></div><div class=\"list-object-title\">Dodaj przedmiot</div></div>");
                     for (i = 0; i < response.length; i++)
                     {
-                        $('.list-product').html($('.list-product').html() + "<div class=\"list-object\"><div class=\"list-object-photo\"><img src=\"../pizza-photos/" + response[i].photo + "\" alt=\"add-cat\" /></div><div class=\"list-object-title\">" + response[i].title + "</div></div>");
+                        $('.list-product').append($('.list-product').html() + "<div class=\"list-object\" onclick=\"edit_product(" + response[i].id +")\"><div class=\"list-object-photo\"><img src=\"../pizza-photos/" + response[i].photo + "\" alt=\"add-cat\" /></div><div class=\"list-object-title\">" + response[i].title + "</div></div>");
                     }
                 }
             });
         }
+        //TODO dodać możliwosc zmieniania danego rekordu
+        function add_product()
+        {
+            var insert = $("#add_item").html();
+            $("#right").html(insert);
+        }
+        function edit_product(id)
+        {
+            var insert = $("#modify_item").html();
+            $("#right").html(insert);
 
+        }
     </script>
+
 </head>
 
 <body>
@@ -299,13 +384,11 @@ if(isset($_POST["submit"]))
                     <?php categories_list(); ?>
                 </div>
                 <div class="list list-product">
-                    <div class="list-object">
-                        <div class="list-object-photo"></div>
-                        <div class="list-object-title">Lorem ipsum dolor sit amet.</div>
-                    </div>
+
                 </div>
             </div>
             <div id="right">
+<!--
                 <div id="site-title">Dodaj do bazy danych</div>
                 <form id="add-to-db" method="post" enctype="multipart/form-data">
                     <input type="file" accept="image/x-png" name="photo" id="photo" />
@@ -329,7 +412,7 @@ if(isset($_POST["submit"]))
                                         <div id="item-price">0 zł</div>
                                         <div id="item-order-button">
                                             <div id="item-order-button-border">
-                                                <div onclick="preview_title()" id="item-order-button-name">Zamów</div>
+                                                <div id="item-order-button-name">Zamów</div>
                                             </div>
                                         </div>
                                     </div>
@@ -340,6 +423,7 @@ if(isset($_POST["submit"]))
                     <input oninput="preview_price()" type="submit" id="submit" name="submit" value="Dodaj do bazy" disabled />
                     <div id="check"></div>
                 </form>
+-->
             </div>
 
         </div>
