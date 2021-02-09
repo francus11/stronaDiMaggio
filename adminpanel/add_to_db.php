@@ -150,6 +150,60 @@ if(isset($_POST["submit_add"]))
         echo $e;
     }
 }
+if(isset($_POST["submit_modify"]))
+{
+    try
+    {
+        if(isset($_FILES["photo"]))
+        {
+            if($_FILES["photo"]["error"] == 0)
+            {
+                $file_name = $_FILES['photo']['name'];
+                $title = $_POST['title'];
+                $ingredients = $_POST['ingredients'];
+                $price = $_POST['price'];
+                $category = $_POST['category'];
+                $subcategory;
+                $subsubcategory;
+                $connect = @new mysqli($db_host, $db_user, $db_password, $db_name);
+                $connect->query("SET NAMES 'utf8' COLLATE 'utf8_polish_ci'");
+                if($connect->connect_errno != 0)
+                {
+                    throw new exception($connect->error);
+                }
+
+                else
+                {
+                    /*$sql = sprintf("SELECT id FROM categories WHERE category='$category'");
+                    if($result = $connect->query($sql))
+                    {
+                        $row = $result->fetch_assoc();
+                        $category = $row['id'];
+                    }*/
+                    $category = category_to_id($category);
+                    $sql = sprintf("INSERT INTO products(id, photo, title, ingredients, price, category) values(NULL, '$file_name', '$title', '$ingredients', '$price', '$category')");
+                    if($connect->query($sql))
+                    {
+                        move_uploaded_file($_FILES["photo"]["tmp_name"], "./../pizza-photos/".$file_name);
+                    }
+                }
+
+            }
+            else
+            {
+                echo $_FILES['photo']['error'];
+            }
+        }
+        else
+        {
+            $e = "Nie dodano pliku";
+        }
+    }
+    catch (exception $e)
+    {
+        echo $e;
+    }
+}
 ?>
 <html>
 
@@ -158,7 +212,7 @@ if(isset($_POST["submit_add"]))
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="Stylesheet" href="style-adminpanel.css" type="text/css" />
     <link rel="Stylesheet" href="style-addtodb.css" type="text/css" />
-    <!--    <link rel="Stylesheet" href="fontello/css/fontello.css" type="text/css" />-->
+        <link rel="Stylesheet" href="fontello/css/fontello.css" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700&display=swap&subset=latin-ext" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>DiMaggio</title>
@@ -201,6 +255,7 @@ if(isset($_POST["submit_add"]))
     <script id="modify_item" type="text/html">
         <div id="site-title">Edytuj przedmiot</div>
         <form id="add-to-db" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="item_id" name="modify_item_id" value="">
             <input type="file" accept="image/x-png" name="photo" id="photo" />
             <input oninput="preview_title()" id="title" name="title" type="text" placeholder="Tytuł" />
             <input oninput="preview_ingredients()" id="ingredients" name="ingredients" type="text" placeholder="Składniki" />
@@ -325,12 +380,15 @@ if(isset($_POST["submit_add"]))
                 },
                 success: function(response)
                 {
-
-                    $('.list-product').html(" ");
+                    console.log("check");
+//                    $('.list-product').html(" ");
                     $('.list-product').html("<div class=\"list-object\" onclick=\"add_product()\"><div class=\"list-object-photo\"></div><div class=\"list-object-title\">Dodaj przedmiot</div></div>");
                     for (i = 0; i < response.length; i++)
                     {
-                        $('.list-product').append($('.list-product').html() + "<div class=\"list-object\" onclick=\"edit_product(" + response[i].id +")\"><div class=\"list-object-photo\"><img src=\"../pizza-photos/" + response[i].photo + "\" alt=\"add-cat\" /></div><div class=\"list-object-title\">" + response[i].title + "</div></div>");
+                        console.log("cycle" + i);
+                        var listOfProducts = $('.list-product');
+                        var insertedHTML = "<div class=\"list-object\" onclick=\"edit_product(" + response[i].id + ")\"><div class=\"list-object-photo\"><img src=\"../pizza-photos/" + response[i].photo + "\" alt=\"add-cat\" /></div><div class=\"list-object-title\">" + response[i].title + "</div></div>";
+                        listOfProducts.append(insertedHTML);
                     }
                 }
             });
@@ -345,6 +403,7 @@ if(isset($_POST["submit_add"]))
         {
             var insert = $("#modify_item").html();
             $("#right").html(insert);
+            $("#item_id").prop("value", id);
 
         }
     </script>
@@ -359,6 +418,7 @@ if(isset($_POST["submit_add"]))
                 <div id="side-bar-onclick" onclick="expandMenu()"></div>
             </div>
         </div>
+
         <div id="side-bar">
             <a href="">
                 <div class="side-bar-option"></div>
@@ -388,42 +448,6 @@ if(isset($_POST["submit_add"]))
                 </div>
             </div>
             <div id="right">
-<!--
-                <div id="site-title">Dodaj do bazy danych</div>
-                <form id="add-to-db" method="post" enctype="multipart/form-data">
-                    <input type="file" accept="image/x-png" name="photo" id="photo" />
-                    <input oninput="preview_title()" id="title" name="title" type="text" placeholder="Tytuł" />
-                    <input oninput="preview_ingredients()" id="ingredients" name="ingredients" type="text" placeholder="Składniki" />
-                    <input oninput="preview_price()" id="price" name="price" type="text" placeholder="Cena" />
-                    <select id="category" name="category" onchange="submit_check()">
-                        <option></option>
-                        <?php categories_list_add(); ?>
-                    </select>
-                    <div id="item-preview">
-                        <div id="item-container">
-                            <div id="item-border-line">
-                                <div id="item-photo">
-                                    <img id="photo-preview1" src="pizzapreview.png" />
-                                </div>
-                                <div id="item-content">
-                                    <div id="item-title">Tytuł</div>
-                                    <div id="item-ingredients">Składniki, składniki, składniki, składniki, składniki</div>
-                                    <div id="item-down">
-                                        <div id="item-price">0 zł</div>
-                                        <div id="item-order-button">
-                                            <div id="item-order-button-border">
-                                                <div id="item-order-button-name">Zamów</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <input oninput="preview_price()" type="submit" id="submit" name="submit" value="Dodaj do bazy" disabled />
-                    <div id="check"></div>
-                </form>
--->
             </div>
 
         </div>
