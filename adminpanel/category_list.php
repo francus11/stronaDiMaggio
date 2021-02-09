@@ -35,4 +35,61 @@ if (isset($_POST['category_id']))
         echo json_encode(array("error" => $e));
     }
 }
+if (isset($_POST['select_item']))
+{
+    require "./../connect.php";
+    try
+    {
+        $connect = @new mysqli($db_host, $db_user, $db_password, $db_name);
+        if($connect->connect_errno != 0)
+        {
+            throw new exception(mysqli_connect_errno());
+        }
+        else
+        {
+            $id = $_POST['select_item'];
+            $sql = sprintf("SELECT products.id, photo, title, ingredients, price, categories.category FROM products LEFT JOIN categories ON products.category = categories.id WHERE products.id='$id' ");
+
+            if($result = $connect->query($sql))
+            {
+                $row = $result->fetch_assoc();
+                echo json_encode($row);
+            }
+            $connect->close();
+        }
+    }
+    catch (exception $e)
+    {
+        echo json_encode(array("error" => $e));
+    }
+}
+if (isset($_POST['category_id_to_category'])) {
+    require "./../connect.php";
+    try
+    {
+        $connect = @new mysqli($db_host, $db_user, $db_password, $db_name);
+        if($connect->connect_errno != 0)
+        {
+            throw new exception(mysqli_connect_errno());
+        }
+        else
+        {
+            $category_id = $_POST['category_id_to_category'];
+            $sql = sprintf("SELECT category FROM categories WHERE id='$category_id'");
+            $return;
+            if($result = $connect->query($sql))
+            {
+                $row = $result->fetch_assoc();
+                $return = $row['category'];
+                echo $return;
+            }
+            $connect->close();
+
+        }
+    }
+    catch (exception $e)
+    {
+        echo $e;
+    }
+}
 ?>

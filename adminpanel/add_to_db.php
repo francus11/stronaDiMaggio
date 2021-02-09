@@ -150,6 +150,7 @@ if(isset($_POST["submit_add"]))
         echo $e;
     }
 }
+//modyfikacja itemu
 if(isset($_POST["submit_modify"]))
 {
     try
@@ -158,6 +159,7 @@ if(isset($_POST["submit_modify"]))
         {
             if($_FILES["photo"]["error"] == 0)
             {
+                $id = $_POST['modify_item_id'];
                 $file_name = $_FILES['photo']['name'];
                 $title = $_POST['title'];
                 $ingredients = $_POST['ingredients'];
@@ -181,7 +183,7 @@ if(isset($_POST["submit_modify"]))
                         $category = $row['id'];
                     }*/
                     $category = category_to_id($category);
-                    $sql = sprintf("INSERT INTO products(id, photo, title, ingredients, price, category) values(NULL, '$file_name', '$title', '$ingredients', '$price', '$category')");
+                    $sql = sprintf("UPDATE products SET photo = '$file_name', title='$title', ingredients='$ingredients', price='$price', category='$category' WHERE id='$id'");
                     if($connect->query($sql))
                     {
                         move_uploaded_file($_FILES["photo"]["tmp_name"], "./../pizza-photos/".$file_name);
@@ -380,12 +382,9 @@ if(isset($_POST["submit_modify"]))
                 },
                 success: function(response)
                 {
-                    console.log("check");
-//                    $('.list-product').html(" ");
                     $('.list-product').html("<div class=\"list-object\" onclick=\"add_product()\"><div class=\"list-object-photo\"></div><div class=\"list-object-title\">Dodaj przedmiot</div></div>");
                     for (i = 0; i < response.length; i++)
                     {
-                        console.log("cycle" + i);
                         var listOfProducts = $('.list-product');
                         var insertedHTML = "<div class=\"list-object\" onclick=\"edit_product(" + response[i].id + ")\"><div class=\"list-object-photo\"><img src=\"../pizza-photos/" + response[i].photo + "\" alt=\"add-cat\" /></div><div class=\"list-object-title\">" + response[i].title + "</div></div>";
                         listOfProducts.append(insertedHTML);
@@ -393,17 +392,39 @@ if(isset($_POST["submit_modify"]))
                 }
             });
         }
-        //TODO dodać możliwosc zmieniania danego rekordu
         function add_product()
         {
             var insert = $("#add_item").html();
             $("#right").html(insert);
         }
+        //TODO importować ustawiony obrazek do pamięci. Przyda się również jakas galeria do wyboru ze zdjęć już dostępnych z bazy
         function edit_product(id)
         {
             var insert = $("#modify_item").html();
             $("#right").html(insert);
             $("#item_id").prop("value", id);
+            $.ajax(
+            {
+                type: 'post',
+                url: 'category_list.php',
+                dataType: 'json',
+                data:
+                {
+                    select_item: id
+                },
+                success: function(response)
+                {
+                    console.log(response);
+                    $("#title").val(response.title);
+                    $("#ingredients").val(response.ingredients);
+                    $("#price").val(response.price);
+                    $("#category").val(response.category);
+                    console.log(response.category);
+                    preview_title()
+                    preview_ingredients()
+                    preview_price()
+                }
+            });
 
         }
     </script>
@@ -444,7 +465,10 @@ if(isset($_POST["submit_modify"]))
                     <?php categories_list(); ?>
                 </div>
                 <div class="list list-product">
-
+                    <div class="list-object" onclick="add_product()">
+                        <div class="list-object-photo"></div>
+                        <div class="list-object-title">Dodaj przedmiot</div>
+                    </div>
                 </div>
             </div>
             <div id="right">
