@@ -206,6 +206,7 @@ if(isset($_POST["submit_modify"]))
         echo $e;
     }
 }
+
 ?>
 <html>
 
@@ -288,6 +289,7 @@ if(isset($_POST["submit_modify"]))
                 </div>
             </div>
             <input oninput="preview_price()" type="submit" id="submit" name="submit_modify" value="Dodaj do bazy" disabled />
+            <div id="delete_button">usuń</div>
             <div id="check"></div>
         </form>
     </script>
@@ -398,6 +400,25 @@ if(isset($_POST["submit_modify"]))
             $("#right").html(insert);
         }
         //TODO importować ustawiony obrazek do pamięci. Przyda się również jakas galeria do wyboru ze zdjęć już dostępnych z bazy
+        //TODO usuwanie itemu z bazy
+        function delete_product(id)
+        {
+
+            $.ajax(
+            {
+                type: 'post',
+                url: 'category_list.php',
+                data:
+                {
+                    delete_item: id
+                },
+                success: function(response)
+                {
+                    console.log(response);
+                    window.location = "add_to_db.php";
+                }
+            });
+        }
         function edit_product(id)
         {
             var insert = $("#modify_item").html();
@@ -420,13 +441,16 @@ if(isset($_POST["submit_modify"]))
                     $("#price").val(response.price);
                     $("#category").val(response.category);
                     console.log(response.category);
-                    preview_title()
-                    preview_ingredients()
-                    preview_price()
+                    preview_title();
+                    preview_ingredients();
+                    preview_price();
+                    var ins = "delete_product(" + id + ")";
+                    $("#delete_button").attr("onclick", ins);
                 }
             });
 
         }
+
     </script>
 
 </head>

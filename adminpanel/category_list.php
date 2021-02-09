@@ -63,6 +63,58 @@ if (isset($_POST['select_item']))
         echo json_encode(array("error" => $e));
     }
 }
+if (isset($_POST['delete_item']))
+{
+    require "./../connect.php";
+    try
+    {
+        $connect = @new mysqli($db_host, $db_user, $db_password, $db_name);
+        if($connect->connect_errno != 0)
+        {
+            throw new exception(mysqli_connect_errno());
+        }
+        else
+        {
+            $id = $_POST['delete_item'];
+            $sql = sprintf("SELECT photo FROM products WHERE id='$id' ");
+
+            if($result = $connect->query($sql))
+            {
+                if ($row = $result->fetch_assoc()) {
+                    if(file_exists("../pizza-photos".$row['photo']))
+                    {
+                        unlink("../pizza-photos".$row['photo']);
+                    }
+                }
+                else
+                {
+                    echo "NO Photo";
+                }
+            }
+
+            $sql = sprintf("DELETE FROM products WHERE id='$id'");
+
+            if($result = $connect->query($sql))
+            {
+                echo "success";
+            }
+            $connect->close();
+        }
+    }
+    catch (exception $e)
+    {
+        echo json_encode(array("error" => $e));
+    }
+}
+/*if (isset($_POST['delete_item']))
+{
+    if(file_exists())
+    {
+
+    }
+//    unlink('test.txt');
+    echo "success";
+}*/
 if (isset($_POST['category_id_to_category'])) {
     require "./../connect.php";
     try
