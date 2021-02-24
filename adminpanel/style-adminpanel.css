@@ -1,10 +1,10 @@
 body{
-	margin: 0;
+    margin: 0;
     /*background-image: url(background2.png);*/
     font-family: 'Open sans condensed', sans-serif;
 }
-#choosebox{
-    display: none;
+.choosebox{
+    display: block;
     position: fixed;
     top: 0;
     left: 0;
@@ -14,6 +14,7 @@ body{
     background-color: rgba(0,0,0, 0.8)
 }
 .choosebox-container{
+    z-index: 1001;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,11 +26,36 @@ body{
     padding: 20px;
 }
 .choosebox-title{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.choosebox-title-element{
+    width: 22px;
+}
+.icon-cancel:hover{
+    cursor: pointer;
+}
+.choosebox-title-text{
     font-size: 25px;
 }
+.choosebox-content{
+    width: 100%;
+    justify-self: center;
+}
+.choosebox-content form{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+.choosebox-content form input[type=text]{
+    margin: 0;
+}
 #container{
-	display: flex;
-	flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
 }
 #right-menu{
     display: flex;
@@ -164,11 +190,11 @@ body{
 
 
 @media only screen and (max-width: 1240px){
-	
+
 }
 
 @media only screen and (max-width: 899px){
-	.order-item:nth-child(1){
+    .order-item:nth-child(1){
         width: 140px;
     }
     .order-item:nth-child(2){
@@ -198,10 +224,10 @@ body{
     .legend-item:nth-child(5){
         width: 68px;
     }
-    
+
 }
 @media only screen and (max-width: 829px){
-    
+
 }
 @media only screen and (max-width: 649px){
     #header{

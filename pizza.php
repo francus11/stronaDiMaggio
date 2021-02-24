@@ -4,7 +4,7 @@ include_once "template-elements.php";
 ?>
 <?php
 
-function item($title)
+function items($title)
 {
     include "connect.php";
     try
@@ -17,31 +17,36 @@ function item($title)
         }
         else
         {
-            $sql = sprintf("SELECT * FROM products WHERE title='$title'");
-            if($result = $connect->query($sql))
+            if(isset($_POST['category']))
             {
-                $result = $result->fetch_assoc();
-                echo '
-                <div class="item-container">
-                    <div class="item-border-line">
-                        <div class="item-photo">
-                            <img src="pizza-photos/'.$result['photo'].'" />
-                        </div>
-                        <div class="item-content">
-                            <div class="item-title">'.$result['title'].'</div>
-                            <div class="item-ingredients">'.$result['ingredients'].'</div>
-                            <div class="item-down">
-                                <div class="item-price">'.$result['price'].'zł</div>
-                                <div class="item-order-button">
-                                    <div class="item-order-button-border">
-                                        <div class="item-order-button-name" onclick="add_to_basket('.$result['id'].')">Zamów</div>
+                $sql = sprintf("SELECT * FROM products LEFT JOIN categories on products.category = categories.id WHERE categories.category = ''");
+                if($result = $connect->query($sql))
+                {
+
+                    $result = $result->fetch_assoc();
+                    echo '
+                    <div class="item-container">
+                        <div class="item-border-line">
+                            <div class="item-photo">
+                                <img src="pizza-photos/'.$result['photo'].'" />
+                            </div>
+                            <div class="item-content">
+                                <div class="item-title">'.$result['title'].'</div>
+                                <div class="item-ingredients">'.$result['ingredients'].'</div>
+                                <div class="item-down">
+                                    <div class="item-price">'.$result['price'].'zł</div>
+                                    <div class="item-order-button">
+                                        <div class="item-order-button-border">
+                                            <div class="item-order-button-name" onclick="add_to_basket('.$result['id'].')">Zamów</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>';
+                    </div>';
+                }
             }
+
         }
         $connect->close();
     }
@@ -54,23 +59,23 @@ function item($title)
 ?>
 <!DOCTYPE html>
 <html>
-	<head>
-		<?php
+    <head>
+        <?php
         head();
         ?>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<link rel="Stylesheet" href="style-pizza.css" type="text/css" />
+        <link rel="Stylesheet" href="style-pizza.css" type="text/css" />
         <title>Pizza - DiMaggio</title>
-	</head>
-	<body>
-		<div id="container">
-			<div id="header">
-				<div id="bar"></div>
-				<?php
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <div id="bar"></div>
+                <?php
                 menu();
                 ?>
-			</div>
-			<div id="content">
+            </div>
+            <div id="content">
                 <?php
                     item("Margherita");
                     item("Capriciosa");
@@ -84,7 +89,7 @@ function item($title)
                     item("Polska");
                 ?>
             </div>
-			<?php
+            <?php
             footer();
             ?>
             <script>
@@ -97,7 +102,7 @@ function item($title)
                 url:'add_to_basket.php',
                 data:{
                     item_id: id
-                    
+
                 },
                 success:function(response) {
                     if(response == "0")
@@ -110,6 +115,6 @@ function item($title)
                 });
             }
             </script>
-		</div>
-	</body>
+        </div>
+    </body>
 </html>

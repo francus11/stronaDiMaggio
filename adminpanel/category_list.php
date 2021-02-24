@@ -13,7 +13,8 @@ if (isset($_POST['category_id']))
         else
         {
             $category = $_POST['category_id'];
-            $sql = sprintf("SELECT id, photo, title FROM products WHERE category='$category' order by id ");
+            if($category == 0) $sql = sprintf("SELECT id, photo, title FROM products WHERE category is NULL order by id ");
+            else $sql = sprintf("SELECT id, photo, title FROM products WHERE category='$category' order by id ");
 
             if($result = $connect->query($sql))
             {
@@ -106,15 +107,6 @@ if (isset($_POST['delete_item']))
         echo json_encode(array("error" => $e));
     }
 }
-/*if (isset($_POST['delete_item']))
-{
-    if(file_exists())
-    {
-
-    }
-//    unlink('test.txt');
-    echo "success";
-}*/
 if (isset($_POST['category_id_to_category'])) {
     require "./../connect.php";
     try
@@ -144,4 +136,5 @@ if (isset($_POST['category_id_to_category'])) {
         echo $e;
     }
 }
+
 ?>

@@ -18,14 +18,14 @@
             case 4:
                 return "Anulowane";
                 break;
-            
+
         }
     }
     require_once "../connect.php";
     try
     {
         $connect = @new mysqli($db_host, $db_user, $db_password, $db_name);
- 
+
         if($connect->connect_errno != 0)
         {
             throw new exception(mysqli_connect_errno());
@@ -37,12 +37,13 @@
             $connect->query('SET NAMES utf8');
             if($result = $connect->query($sql))
             {
-                if($result->num_rows >= 1)
+                if($result->num_rows >= 0)
                 {
                     foreach($result as $order)
                     {
-                        $status = status_translate($order['status']);
-                        echo '<div class="order">
+//                        $status = status_translate($order['status']);
+                        $order['status']= status_translate($order['status']);
+                        /*echo '<div class="order">
                     <div class="order-item">
                         <div class="order-name">'.$order['name'].'</div>
                         <div class="order-address">'.$order['address'].'</div>
@@ -55,10 +56,10 @@
                         <div class="status-button" onclick="changeStatus()">Zmień status</div>
                     </div>
                     <div class="order-item">57.50 zł</div>
-                </div>';
+                </div>';*/
                     }
                 }
-                
+
             }
             $connect->close();
         }

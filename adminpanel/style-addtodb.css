@@ -68,7 +68,7 @@ input[type=text]{
 }
 input[type=submit]{
     width: 150px;
-    
+
 }
 #item-preview{ /* preview */
     border-style: solid;
@@ -81,9 +81,9 @@ input[type=submit]{
     height: 230px;
     padding: 10px;
     background-color: white;
-	flex: 0 1 auto;
-	box-sizing: border-box;
-}   
+    flex: 0 1 auto;
+    box-sizing: border-box;
+}
 #item-border-line{
     width: 100%;
     height: 100%;
@@ -125,8 +125,16 @@ input[type=submit]{
     font-size: 30px;
     margin-right: 10px;
 }
+.delete_button{
+    color: red;
+    text-align: right;
+}
+.delete_button:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
 #item-order-button{
-    
+
     margin-top: auto;
     box-sizing: border-box;
     padding: 2px;
@@ -135,7 +143,7 @@ input[type=submit]{
     background-color: white;
     align-self: flex-end;
     margin: 0 10px 10px 0;
-    
+
     transition: background-color, 0.5s;
 }
 #item-order-button-border{
@@ -163,3 +171,4 @@ input[type=submit]{
     transition: color, 0.5s;
     cursor: pointer;
 }
+
